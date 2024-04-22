@@ -3,7 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment-hijri';
 
 @Component({
-  selector: 'lib-islamic-hijri-ghamari-datepicker',
+  selector: 'islamic-hijri-ghamari-datepicker',
   templateUrl: './islamic-hijri-ghamari-datepicker.html',
   styles: [
     './islamic-hijri-ghamari-datepicker.css'
