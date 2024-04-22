@@ -16,16 +16,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'npm-library'`, () => {
+  it(`should have as title 'playground'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('npm-library');
+    expect(app.title).toEqual('playground');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('npm-library app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('playground app is running!');
   });
 });

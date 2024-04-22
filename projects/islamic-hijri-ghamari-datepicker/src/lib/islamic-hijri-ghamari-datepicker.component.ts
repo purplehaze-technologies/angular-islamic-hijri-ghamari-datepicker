@@ -1,16 +1,17 @@
 import { Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import * as moment from 'moment-hijri';
 
 @Component({
-  selector: 'islamic-hijri-ghamari-datepicker',
-  templateUrl: './islamic-hijri-ghamari-datepicker.html',
-  styles: ['./islamic-hijri-ghamari-datepicker.css'],
+  selector: 'lib-islamic-hijri-ghamari-datepicker',
+  templateUrl: './islamic-hijri-ghamari-datepicker.component.html',
+  styleUrls: ['./islamic-hijri-ghamari-datepicker.component.css'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => IslamicHijriGhamariDatepickerComponent),
     multi: true
-  }],
+  }]
 })
 export class IslamicHijriGhamariDatepickerComponent implements ControlValueAccessor, OnInit {
   @ViewChild('modalCalendar') modalCalendar?: TemplateRef<any>;
@@ -473,4 +474,3 @@ export class IslamicHijriGhamariDatepickerComponent implements ControlValueAcces
 
 
 }
-

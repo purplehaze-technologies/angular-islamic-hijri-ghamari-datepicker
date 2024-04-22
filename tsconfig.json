@@ -8,6 +8,10 @@
     "declaration": false,
     "downlevelIteration": true,
     "paths": {
+      "islamic-hijiri-ghamari-datepicker": [
+        "dist/islamic-hijiri-ghamari-datepicker/islamic-hijiri-ghamari-datepicker",
+        "dist/islamic-hijiri-ghamari-datepicker"
+      ],
       "islamic-hijri-ghamari-datepicker": [
         "dist/islamic-hijri-ghamari-datepicker/islamic-hijri-ghamari-datepicker",
         "dist/islamic-hijri-ghamari-datepicker"

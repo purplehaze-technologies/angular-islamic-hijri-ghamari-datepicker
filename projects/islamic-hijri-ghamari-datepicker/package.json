@@ -7,8 +7,5 @@
   },
   "dependencies": {
     "tslib": "^2.0.0"
-  },
-  "devDependencies": {
-    "moment-hijri": "^2.1.2"
   }
 }
