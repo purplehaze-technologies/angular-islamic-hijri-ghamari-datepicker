@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IslamicHijriGhamariDatepickerComponent } from './islamic-hijri-ghamari-datepicker.component';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -8,6 +10,8 @@ import { IslamicHijriGhamariDatepickerComponent } from './islamic-hijri-ghamari-
     IslamicHijriGhamariDatepickerComponent
   ],
   imports: [
+    FormsModule,
+    CommonModule
   ],
   exports: [
     IslamicHijriGhamariDatepickerComponent

@@ -5,14 +5,12 @@ import * as moment from 'moment-hijri';
 @Component({
   selector: 'islamic-hijri-ghamari-datepicker',
   templateUrl: './islamic-hijri-ghamari-datepicker.html',
-  styles: [
-    './islamic-hijri-ghamari-datepicker.css'
-  ],
+  styles: ['./islamic-hijri-ghamari-datepicker.css'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => IslamicHijriGhamariDatepickerComponent),
     multi: true
-  }]
+  }],
 })
 export class IslamicHijriGhamariDatepickerComponent implements ControlValueAccessor, OnInit {
   @ViewChild('modalCalendar') modalCalendar?: TemplateRef<any>;
@@ -475,3 +473,4 @@ export class IslamicHijriGhamariDatepickerComponent implements ControlValueAcces
 
 
 }
+
