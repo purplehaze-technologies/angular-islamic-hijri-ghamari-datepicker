@@ -1,17 +1,17 @@
 <div class="datepicker">
-  <input type="text" (focus)="showDatepicker = true" [value]="selectedDate | date: 'yyyy-MM-dd'" readonly />
-  <div *ngIf="showDatepicker" class="datepicker-popup">
-    <div class="calendar-header">
-      <button (click)="previousMonth()">&#8249;</button>
-      <span>{{ currentMonthName }} {{ currentYear }}</span>
-      <button (click)="nextMonth()">&#8250;</button>
-    </div>
-    <div class="calendar-body">
-      <div class="day" *ngFor="let day of days">{{ day }}</div>
-      <div class="date" *ngFor="let date of dates" [class.selected]="isSelectedDate(date.gregorianDate)"
-        (click)="selectDate(date)">
-        {{ date.hijriDate }}
-      </div>
+  <input type="text" (focus)="showDatepicker = true" [value]="selectedDate" readonly />
+  <div *ngIf=" showDatepicker" class="datepicker-popup">
+  <div class="calendar-header">
+    <button (click)="previousMonth()">&#8249;</button>
+    <span>{{ currentMonthName }} {{ currentYear }}</span>
+    <button (click)="nextMonth()">&#8250;</button>
+  </div>
+  <div class="calendar-body">
+    <div class="day" *ngFor="let day of days">{{ day }}</div>
+    <div class="date" *ngFor="let date of dates" [class.selected]="isSelectedDate(date.gregorianDate)"
+      (click)="selectDate(date)">
+      {{ date.hijriDate }}
     </div>
   </div>
+</div>
 </div>

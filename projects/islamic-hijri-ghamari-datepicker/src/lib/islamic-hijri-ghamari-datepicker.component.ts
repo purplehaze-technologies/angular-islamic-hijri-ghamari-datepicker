@@ -10,8 +10,30 @@ import * as moment from 'moment-hijri';
 
 })
 export class IslamicHijriGhamariDatepickerComponent implements OnInit {
+  @Input() disabled = false;
+  @Input() value = new Date();
+  @Input() defaultDate = new Date();
+  @Input() monthPicker = false;
+  @Input() datePicker = true;
+  @Input() timePicker = false;
+  @Input() showLocaleSwitch = true;
+  @Input() locale = "en";
+  @Input() inputFormat = "YYYY-MM-DD";
+  @Input() placeholder = "date/time";
+  @Input() disabledDates = [];
+  @Input() disableFutureDates: boolean = false
+  @Input() disablePastDates: boolean = false
+  @Input() showPickerIcon = true;
+  @Input() showTodayBtn = true;
+  @Input() todayBtnText = "";
+  @Input() showClearBtn = true;
+  @Input() showYearNavigator = true;
+  @Input() yearNavigatorRange = "1370,1410";
+  @Input() showMonthNavigator = true;
+
+
   showDatepicker = false;
-  selectedDate: Date;
+  selectedDate: any;
   currentMonth: moment.Moment;
   dates: { gregorianDate: Date, hijriDate: string }[] = [];
   days: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -22,24 +44,36 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
   }
 
   get currentMonthName(): string {
-    return this.currentMonth.format('iMMMM');
+    return this.currentMonth.locale(this.locale).format('iMMMM');
   }
 
   get currentYear(): string {
-    return this.currentMonth.format('iYYYY');
+    return this.currentMonth.locale(this.locale).format('iYYYY');
   }
 
   generateCalendar() {
     this.dates = [];
-    const startOfMonth = this.currentMonth.clone().startOf('iMonth').startOf('week');
-    const endOfMonth = this.currentMonth.clone().endOf('iMonth').endOf('week');
-    const date = startOfMonth.clone().subtract(1, 'day');
+    const startOfMonth = this.currentMonth.clone().startOf('iMonth');
+    const endOfMonth = this.currentMonth.clone().endOf('iMonth');
 
-    while (date.isBefore(endOfMonth, 'day')) {
-      this.dates.push({
-        gregorianDate: date.toDate(),
-        hijriDate: date.add(1, 'day').format('iD')
-      });
+    const startDate = startOfMonth.clone().startOf('week');
+    const endDate = endOfMonth.clone().endOf('week');
+
+    const date = startDate.clone().subtract(1, 'day');
+
+    while (date.isBefore(endDate, 'day')) {
+      date.add(1, 'day');
+      if (date.isSameOrAfter(startOfMonth) && date.isSameOrBefore(endOfMonth)) {
+        this.dates.push({
+          gregorianDate: date.toDate(),
+          hijriDate: date.locale(this.locale).format('iD')
+        });
+      } else {
+        this.dates.push({
+          gregorianDate: null,
+          hijriDate: ''
+        });
+      }
     }
   }
 
@@ -54,14 +88,24 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
   }
 
   selectDate(date) {
-
-    this.selectedDate = date.gregorianDate;
+    this.selectedDate = this.convertToHijri(date.gregorianDate)
     console.log("selectedDate", date, this.selectedDate)
     this.showDatepicker = false;
   }
+  convertToHijri(gregorianDate: Date) {
+    const hijriDate = moment(gregorianDate).format('iYYYY/iMM/iDD');
+    const formattedHijriDate = moment(hijriDate)
+      .locale(this.locale)
+      .format('DD-iMMMM-iYYYY');
+    console.log('hijriDate', hijriDate, 'formattedHijriDate', formattedHijriDate)
+    return formattedHijriDate
+  }
+
+
 
   isSelectedDate(date: Date): boolean {
-    return this.selectedDate && this.selectedDate.toDateString() === date.toDateString();
+    return
+    return this.selectedDate && this.selectedDate?.toDateString() === date?.toDateString();
   }
 
 }
