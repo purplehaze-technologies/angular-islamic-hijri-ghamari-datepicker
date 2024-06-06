@@ -33,7 +33,7 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
 
 
   showDatepicker = false;
-  selectedDate: any;
+  selectedDate: any = null;
   currentMonth: moment.Moment;
   dates: { gregorianDate: Date, hijriDate: string }[] = [];
   days: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -96,7 +96,7 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
     const hijriDate = moment(gregorianDate).format('iYYYY/iMM/iDD');
     const formattedHijriDate = moment(hijriDate)
       .locale(this.locale)
-      .format('DD-iMMMM-iYYYY');
+      .format('DD-iMMMM-YYYY');
     console.log('hijriDate', hijriDate, 'formattedHijriDate', formattedHijriDate)
     return formattedHijriDate
   }
