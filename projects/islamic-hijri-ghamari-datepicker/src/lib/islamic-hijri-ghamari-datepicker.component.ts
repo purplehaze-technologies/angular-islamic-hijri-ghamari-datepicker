@@ -1,13 +1,22 @@
 import { Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
 import * as moment from 'moment-hijri';
 
+export interface ICalendarDate {
+  gregorianDate: Date,
+  hijriDate: string,
+  disabled?: boolean,
+  moment: moment.Moment
+}
+export interface IDate {
+  jsDate: Date,
+  hijriDate: string,
+  moment: moment.Moment
+}
 @Component({
   selector: 'lib-islamic-hijri-ghamari-datepicker',
   templateUrl: './islamic-hijri-ghamari-datepicker.component.html',
-  styleUrls: ['./islamic-hijri-ghamari-datepicker.component.css'],
-
+  styleUrls: ['./islamic-hijri-ghamari-datepicker.component.css']
 })
 export class IslamicHijriGhamariDatepickerComponent implements OnInit {
   @Input() disabled = false;
@@ -17,12 +26,12 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
   @Input() datePicker = true;
   @Input() timePicker = false;
   @Input() showLocaleSwitch = true;
-  @Input() locale = "en";
+  @Input() locale: 'en' | 'ar' = "en";
   @Input() inputFormat = "YYYY-MM-DD";
   @Input() placeholder = "date/time";
   @Input() disabledDates = [];
-  @Input() disableFutureDates: boolean = false
-  @Input() disablePastDates: boolean = false
+  @Input() disableFutureDates: boolean = false;
+  @Input() disablePastDates: boolean = false;
   @Input() showPickerIcon = true;
   @Input() showTodayBtn = true;
   @Input() todayBtnText = "";
@@ -31,16 +40,24 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
   @Input() yearNavigatorRange = "1370,1410";
   @Input() showMonthNavigator = true;
 
+  @Output() date: EventEmitter<IDate> = new EventEmitter();
 
+  selected_date_text: string = null
   showDatepicker = false;
-  selectedDate: any = null;
+  showYearSelector = false;
+  showMonthSelector = false;
+  selectedDate: ICalendarDate | null = null;
   currentMonth: moment.Moment;
-  dates: { gregorianDate: Date, hijriDate: string }[] = [];
-  days: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  dates: ICalendarDate[] = [];
+  days_ar: string[] = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  days_en: string[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  months: string[] = moment().localeData().months();
+  years: number[] = [];
 
   ngOnInit() {
     this.currentMonth = moment().startOf('iMonth');
     this.generateCalendar();
+    this.generateYears();
   }
 
   get currentMonthName(): string {
@@ -49,6 +66,13 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
 
   get currentYear(): string {
     return this.currentMonth.locale(this.locale).format('iYYYY');
+  }
+
+  generateYears() {
+    const [startYear, endYear] = this.yearNavigatorRange.split(',').map(Number);
+    for (let i = startYear; i <= endYear; i++) {
+      this.years.push(i);
+    }
   }
 
   generateCalendar() {
@@ -65,17 +89,25 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
       date.add(1, 'day');
       if (date.isSameOrAfter(startOfMonth) && date.isSameOrBefore(endOfMonth)) {
         this.dates.push({
+          moment: date,
           gregorianDate: date.toDate(),
-          hijriDate: date.locale(this.locale).format('iD')
+          hijriDate: date.locale(this.locale).format('iD'),
+          disabled: false
         });
       } else {
         this.dates.push({
+          moment: date,
           gregorianDate: null,
-          hijriDate: ''
+          hijriDate: '',
+          disabled: true
         });
       }
     }
+
+    console.log("Dates", this.dates)
   }
+
+
 
   previousMonth() {
     this.currentMonth.subtract(1, 'iMonth');
@@ -88,24 +120,67 @@ export class IslamicHijriGhamariDatepickerComponent implements OnInit {
   }
 
   selectDate(date) {
-    this.selectedDate = this.convertToHijri(date.gregorianDate)
-    console.log("selectedDate", date, this.selectedDate)
+
+    if (date.disabled) {
+      return
+    }
+    this.selectDate = date
+    this.updateView(this.selectDate)
     this.showDatepicker = false;
+
+    this.composeOutput(this.selectDate)
   }
+
+  updateView(selected_date) {
+    switch (this.locale) {
+      case 'en':
+        this.selected_date_text = this.convertToHijri(selected_date.gregorianDate);
+        break;
+      case 'ar':
+        this.selected_date_text = selected_date.gregorianDate
+        break;
+      default:
+        break;
+    }
+
+  }
+  composeOutput(selected_date) {
+    this.date.emit(selected_date)
+  }
+
   convertToHijri(gregorianDate: Date) {
     const hijriDate = moment(gregorianDate).format('iYYYY/iMM/iDD');
     const formattedHijriDate = moment(hijriDate)
       .locale(this.locale)
       .format('DD-iMMMM-YYYY');
-    console.log('hijriDate', hijriDate, 'formattedHijriDate', formattedHijriDate)
-    return formattedHijriDate
+    console.log('hijriDate', hijriDate, 'formattedHijriDate', formattedHijriDate);
+    return formattedHijriDate;
   }
 
+  // isSelectedDate(date: Date): boolean {
+  //   return this.selectedDate && this.selectedDate?.toDateString() === date?.toDateString();
+  // }
 
-
-  isSelectedDate(date: Date): boolean {
-    return
-    return this.selectedDate && this.selectedDate?.toDateString() === date?.toDateString();
+  toggleMonthSelector() {
+    this.showMonthSelector = !this.showMonthSelector;
   }
 
+  toggleYearSelector() {
+    this.showYearSelector = !this.showYearSelector;
+    if (this.showYearSelector) {
+      this.showMonthSelector = false;
+    }
+  }
+
+  selectMonth(monthIndex: number) {
+    this.currentMonth.iMonth(monthIndex);
+    this.showMonthSelector = false;
+    this.generateCalendar();
+  }
+
+  selectYear(year: number) {
+    this.currentMonth.iYear(year);
+    this.showYearSelector = false;
+    this.showMonthSelector = true;
+  }
 }

@@ -15,6 +15,29 @@
   justify-content: space-between;
   padding: 10px;
   background: #f0f0f0;
+  cursor: pointer;
+}
+
+.year-selector,
+.month-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.year,
+.month {
+  padding: 5px 10px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.year:hover,
+.month:hover {
+  background: #e0e0e0;
 }
 
 .calendar-body {
@@ -38,6 +61,11 @@
 
 .date:hover {
   background: #e0e0e0;
+}
+
+.date.disabled:hover {
+  background: #ffffff;
+  cursor: not-allowed;
 }
 
 .date.selected {
