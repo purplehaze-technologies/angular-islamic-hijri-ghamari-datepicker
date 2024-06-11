@@ -63,8 +63,13 @@
   background: #e0e0e0;
 }
 
+.date.disabled {
+  background: #e2e2e2;
+  cursor: not-allowed;
+}
+
 .date.disabled:hover {
-  background: #ffffff;
+  background: #e2e2e2;
   cursor: not-allowed;
 }
 

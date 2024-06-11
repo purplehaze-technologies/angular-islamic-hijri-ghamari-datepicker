@@ -7,9 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'playground';
-
-
-  hijiriDateEventHandler(event) {
+  language: string = 'en'
+  input_date: Date = new Date(2024, 5, 11)
+  disabled_dates: Date[] = [new Date(2024, 5, 20)]
+  dateOutputHandler(event) {
     console.log(event)
   }
 }

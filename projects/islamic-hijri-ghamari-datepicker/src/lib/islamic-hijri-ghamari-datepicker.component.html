@@ -4,7 +4,7 @@
   <div *ngIf="showDatepicker" class="datepicker-popup">
     <div class="calendar-header">
       <button (click)="previousMonth()">&#8249;</button>
-      <span (click)="toggleMonthSelector()">{{ currentMonthName }} asdas</span>
+      <span (click)="toggleMonthSelector()">{{ currentMonthName }}</span>
       <span (click)="toggleYearSelector()">{{ currentYear }}</span>
       <button (click)="nextMonth()">&#8250;</button>
     </div>
@@ -22,7 +22,7 @@
     </div>
 
     <div *ngIf="!showYearSelector && !showMonthSelector" class="calendar-body">
-      <div class="day" *ngFor="let day of (locale === 'ar' ? days_ar : days_en)">{{ day }}</div>
+      <div class="day" *ngFor="let day of days">{{ day }}</div>
       <div class="date" *ngFor="let date of dates" [class.disabled]="date.disabled" (click)="selectDate(date)">
         {{ date.hijriDate }}
       </div>
